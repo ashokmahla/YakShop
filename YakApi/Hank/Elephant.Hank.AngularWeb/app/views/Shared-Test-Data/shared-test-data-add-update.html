@@ -1,0 +1,427 @@
+<section class="content" ng-init="stateParamSharedTestDataId ? onLoadEdit(): onLoadAdd()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 ng-if="!stateParamSharedTestDataId"> Add Shared Test Data for
+              <small> {{SharedTest.WebsiteName}} - {{SharedTest.TestName}}</small>
+            </h3>
+            <h3 ng-if="stateParamSharedTestDataId"> Update Shared Test Data for
+              <small> {{SharedTest.WebsiteName}} - {{SharedTest.TestName}}</small>
+            </h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->        <!-- form start -->
+          <form class=" form-horizontal" name="SharedTestDataForm" ng-submit="SharedTestDataForm.$valid && addUpdateSharedTestData()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Execution Sequence</label>
+                  <input type="number" class="form-control" ng-model="SharedTestData.ExecutionSequence"
+                         name="ExecutionSequence"
+                         placeholder="Execution Sequence" required>
+              </div>
+
+              <div class="form-group">
+                <label>Step Type</label>
+
+                <select class="form-control" ng-model="SharedTestData.StepType" ng-disabled="!!stateParamSharedTestDataId"
+                        ng-options="stepType.Id as stepType.Type for stepType in StepTypes | orderBy:'Type'"
+                        ng-change="onStepTypeChange()" name="StepType" required>
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+
+              <section name="SqlTestStep" ng-if="SharedTestData.StepType==3">
+
+                <div class="form-group">
+                  <label>Data Base Category </label>
+
+                  <select class="form-control" ng-model="SharedTestData.DataBaseCategoryId" name="DataBaseCategoryId"
+                          ng-options="databaseCategory.Id as databaseCategory.Name for databaseCategory in DataBaseCategories | orderBy:'Name'"
+                          required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>SQL Action </label>
+
+                  <select class="form-control" ng-model="SharedTestData.ActionId" name="ActionId"
+                          ng-options="action.Id as action.Value for action in ActionList | orderBy:'Value'" required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>SQL Query</label>
+
+                  <textarea type="text" class="form-control" placeholder="Sql Query" name="Value"
+                            ng-model="SharedTestData.Value"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Variable Name</label>
+
+                  <input type="text" autocomplete="off" class="form-control" placeholder="Variable Name"
+                         name="VariableName"
+                         typeahead="variable for variable in VariableList | filter:$viewValue | limitTo:8"
+                         ng-model="SharedTestData.VariableName" required="">
+                </div>
+
+                <div class="form-group" >
+                  <label>Skip by default</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsIgnored">
+                </div>
+
+                <div class="form-group">
+                  <label>Optional</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsOptional">
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+
+                  <textarea type="text" class="form-control ng-pristine ng-valid ng-touched"
+                            ng-model="SharedTestData.Description"
+                            name="Description" placeholder="Description"></textarea>
+                </div>
+
+                <div class="form-group col-sm-6 col-centered">
+                  <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+                </div>
+
+              </section>
+
+
+              <section name="TestStep" ng-if="SharedTestData.StepType==0">
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.ddlAction">
+                  <label>Action </label>
+
+                  <select class="form-control" ng-model="SharedTestData.ActionId"
+                          name="ActionId"
+                          ng-options="action.Id as action.Value for action in ActionList | orderBy:'Value'"
+                          ng-change="onActionChange()" required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group" ng-if="SharedTestData.ActionId==ActionConstants.TransformationOnActionId || SharedTestData.ActionId==ActionConstants.TransformationOffActionId">
+                  <label>Transformation Category</label>
+
+                  <select class="form-control" ng-model="SharedTestData.Value"
+                          ng-options="transformationCategory.Id as transformationCategory.Name for transformationCategory in TransformationCategoryList | orderBy:'Name'"
+                          name="SharedStepWebsiteId" required="Please select transformation category">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <!-- #start Load Report Data  -->
+
+                <div class="form-group" ng-if="SharedTestData.ActionId==ActionConstants.LoadReportDataActionId || SharedTestData.ActionId==ActionConstants.MarkLoadDataFromReportActionId">
+                  <label>Website</label>
+                  <select class="form-control" ng-model="SharedTestData.ReportDataWebsiteId"
+                          ng-options="website.Id as website.Name for website in WebsiteList | orderBy:'Name'"
+                          ng-change="onWebsiteChange()" name="SharedStepWebsiteId" required="Please select website">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group"
+                     ng-if="(SharedTestData.ActionId==ActionConstants.LoadReportDataActionId || SharedTestData.ActionId==ActionConstants.MarkLoadDataFromReportActionId) && !!SharedTestData.ReportDataWebsiteId">
+                  <label>Test Category</label>
+
+                  <select class="form-control" ng-model="SharedTestData.ReportDataCategoryId"
+                          ng-options="testCat.Id as testCat.Name for testCat in TestCategoryList | orderBy:'Name'"
+                          ng-change="onTestCategoryChange()" name="ReportDataCategoryId"
+                          required="Please select test category">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group"
+                     ng-if="(SharedTestData.ActionId==ActionConstants.LoadReportDataActionId || SharedTestData.ActionId==ActionConstants.MarkLoadDataFromReportActionId) && !!SharedTestData.ReportDataWebsiteId && (!!SharedTestData.ReportDataCategoryId || SharedTestData.ReportDataCategoryId==0)">
+                  <label>Test</label>
+                  <select class="form-control" ng-model="SharedTestData.ReportDataTestId"
+                          ng-options="test.Id as test.TestName for test in TestList | orderBy:'TestName'"
+                          name="SharedStepWebsiteTestId" required="Please select test">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group"
+                     ng-show="(SharedTestData.ActionId==ActionConstants.LoadReportDataActionId) && !!SharedTestData.ReportDataTestId">
+                  <label>Day till past by date?</label>
+
+                  <input type="checkbox" ng-click="onDayTillPastByDateCbxClick()"
+                         ng-model="SharedTestData.DayTillPastByDateCbx">
+                </div>
+
+                <div class="form-group" ng-if="(SharedTestData.ActionId==ActionConstants.LoadReportDataActionId) && !!SharedTestData.ReportDataTestId">
+                  <label>Day till past</label>
+
+                  <input ng-if="!SharedTestData.DayTillPastByDateCbx" type="number" class="form-control" placeholder="Day till past" name="DayTillPast"
+                         ng-model="SharedTestData.DayTillPast" required>
+
+                  <input ng-if="SharedTestData.DayTillPastByDateCbx" class="form-control" data-date-format="MM-dd-yyyy" size="16" type="text" value=""
+                         ng-model="SharedTestData.DayTillPastByDate"
+                         readonly
+                         name="DayTillPastByDate" required>
+                  <span class="input-group-addon" onclick="enableDateTimePicker()"><span
+                    class="glyphicon glyphicon-th"></span></span>
+
+                  <input type="hidden" id="dtp_input1" value=""/><br/>
+                </div>
+                <!-- #end  Load Report Data  -->
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.ddlBrowserName">
+                  <label>Browser</label>
+
+                  <select class="form-control" ng-model="SharedTestData.BrowserId"
+                          ng-options="browser.Id as browser.DisplayName for browser in BrowserList | orderBy:'Id'"
+                          name="BrowserId" required="">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.ddlPageNonValidation">
+                  <label>Page</label>
+                  <select class="form-control" ng-model="SharedTestData.PageId"
+                          ng-options="page.Id as page.Value for page in PagesList | orderBy:'Value'"
+                          name="PageId" ng-change="onPageChange()">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.ddlPage">
+                  <label>Page</label>
+
+                  <select class="form-control" ng-model="SharedTestData.PageId"
+                          ng-options="page.Id as page.Value for page in PagesList | orderBy:'Value'"
+                          name="PageId" ng-change="onPageChange()" required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.ddlDisplayName">
+                  <label>Display Name</label>
+
+                  <select class="form-control" ng-model="SharedTestData.LocatorIdentifierId"
+                          ng-options="displayName.Id as displayName.DisplayName for displayName in DisplayNameList | orderBy:'DisplayName'"
+                          name="LocatorIdentifierId" required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group"
+                     ng-if="InputControlDisplayStatus.chkAssignVariableValue">
+                  <label>Assign Variable Value</label>
+
+                  <input type="checkbox" ng-change="onAssignVariableClick()"
+                         ng-model="SharedTestData.IsAssignVariableName"/>
+                </div>
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.chkSkipByDefault">
+                  <label>Skip by default</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsIgnored">
+                </div>
+
+                <div class="form-group" ng-if="InputControlDisplayStatus.chkOptional">
+                  <label>Optional</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsOptional">
+                </div>
+
+
+                <div class="form-group"
+                     ng-if="InputControlDisplayStatus.txtValue">
+                  <label>Value</label>
+
+                  <input type="text" class="form-control" placeholder="Value" name="Value"
+                         ng-model="SharedTestData.Value">
+                </div>
+
+                <div class="form-group"
+                     ng-if="InputControlDisplayStatus.txtAutoCompVariableName">
+                  <label>Variable Name</label>
+
+                  <input type="text" autocomplete="off" class="form-control" placeholder="Variable Name"
+                         name="VariableName"
+                         typeahead="variable for variable in VariableList | filter:$viewValue | limitTo:8"
+                         ng-model="SharedTestData.VariableName" required="">
+                </div>
+
+
+
+                <div class="form-group">
+                  <label>Description</label>
+
+                  <textarea type="text" class="form-control ng-pristine ng-valid ng-touched"
+                            ng-model="SharedTestData.Description"
+                            name="Description" placeholder="Description"></textarea>
+                </div>
+
+                <div class="form-group col-sm-6 col-centered">
+                  <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+                </div>
+
+              </section>
+
+              <section name="ApiTestStep" ng-if="SharedTestData.StepType==4">
+
+                <div class="form-group">
+                  <label>Api Category </label>
+
+                  <select class="form-control" ng-model="SharedTestData.ApiTestData.ApiCategoryId" name="ApiCategoryId"
+                          ng-options="apiCategory.Id as apiCategory.Name for apiCategory in ApiCategories | orderBy:'Name'"
+                          required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Request Type </label>
+
+                  <select class="form-control" ng-change="onRequestTypeChange()" ng-model="SharedTestData.ApiTestData.RequestTypeId" name="RequestTypeId"
+                          ng-options="requestType.Id as requestType.Name for requestType in RequestTypeList | orderBy:'Name'"
+                          required>
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>End Point</label>
+
+                  <input type="text" class="form-control" placeholder="End Point"
+                         ng-model="SharedTestData.ApiTestData.EndPoint">
+                </div>
+
+                <div class="form-group">
+                  <label>Api Url</label>
+
+                  <input type="text" class="form-control" placeholder="Api Url"
+                         ng-model="SharedTestData.ApiTestData.ApiUrl">
+                </div>
+
+                <div class="form-group">
+                  <label>Header(s)</label>
+
+                  <div class="row" style="padding-left: 0px;margin-bottom: 10px" ng-repeat="header in SharedTestData.ApiTestData.Headers">
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" placeholder="Name" name="HeaderName"
+                             ng-model="header.Name" required="">
+                    </div>
+                    <div class="col-sm-8">
+                      <input type="text" class="form-control" placeholder="Value" name="HeaderValue"
+                             ng-model="header.Value">
+                    </div>
+                    <div class="col-sm-1 text-right" style="margin-top: 2px">
+                      <button type="button" class="btn btn-danger fa fa-minus" title="Remove"
+                              ng-click="removeHeader($index,1)"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-10 text-left">
+                    <button type="button" class="btn btn-success fa fa-plus" title="Add header"
+                            ng-click="addBlankHeader(1)"></button>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Ignore Header(s)</label>
+
+                  <div class="row" style="padding-left: 0px;margin-bottom: 10px"
+                       ng-repeat="ignoreheader in SharedTestData.ApiTestData.IgnoreHeaders">
+                    <div class="col-sm-3">
+                      <input type="text" class="form-control" placeholder="Name" name="HeaderName"
+                             ng-model="ignoreheader.Name" required="">
+                    </div>
+                    <div class="col-sm-1 text-right" style="margin-top: 2px">
+                      <button type="button" class="btn btn-danger fa fa-minus" title="Remove"
+                              ng-click="removeHeader($index,2)"></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-10 text-left">
+                    <button type="button" class="btn btn-success fa fa-plus" title="Add header"
+                            ng-click="addBlankHeader(2)"></button>
+                  </div>
+                </div>
+
+
+                <div class="form-group">
+                  <label>Variable Name</label>
+
+                  <input type="text" autocomplete="off" class="form-control" placeholder="Variable Name"
+                         name="VariableName"
+                         typeahead="variable for variable in VariableList | filter:$viewValue | limitTo:8"
+                         ng-model="SharedTestData.VariableName" required="">
+                </div>
+
+                <div class="form-group" >
+                  <label>Skip by default</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsIgnored">
+                </div>
+
+                <div class="form-group" >
+                  <label>Optional</label>
+
+                  <input type="checkbox" ng-model="SharedTestData.IsOptional">
+                </div>
+
+                <div class="form-group" ng-if="IsRequestBodyAllowed">
+                  <label>Request Body</label>
+
+                  <textarea type="text" class="form-control ng-pristine ng-valid ng-touched"
+                            ng-model="SharedTestData.ApiTestData.RequestBody"
+                            name="RequestBody" placeholder="Request Body"></textarea>
+                </div>
+
+                <div class="form-group">
+                  <label>Description</label>
+
+                  <textarea type="text" class="form-control ng-pristine ng-valid ng-touched"
+                            ng-model="SharedTestData.Description"
+                            name="Description" placeholder="Description"></textarea>
+                </div>
+
+                <div class="form-group col-sm-6 col-centered">
+                  <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+                </div>
+              </section>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+  enableDateTimePicker = function () {
+    $('.form_datetime').datetimepicker({
+      endDate: '+0d',
+      format: 'mm-dd-yyyy',
+      weekStart: 1,
+      todayBtn: 1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      minView: 2,
+      forceParse: 0
+    });
+  }
+</script>

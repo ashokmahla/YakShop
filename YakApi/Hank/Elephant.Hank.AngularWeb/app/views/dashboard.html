@@ -1,0 +1,210 @@
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Dashboard</h1>
+      </div><!-- /.col -->
+    </div><!-- /.row -->
+  </div><!-- /.container-fluid -->
+</div>
+
+<section class="content" ng-init="onWebsiteChange(true)">
+  <div class="container-fluid">
+    <!-- Small boxes (Stat box) -->
+    <div class="row">
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-auqa">
+          <div class="inner">
+            <h3>{{TotalTest}}</h3>
+
+            <p>Total</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-briefcase"></i>
+          </div>
+          <a href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}"
+             class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-success">
+          <div class="inner">
+            <h3>{{PassedTest}}</h3>
+
+            <p>Passed</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-thumbsup"></i>
+          </div>
+          <a href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=8"
+             class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-danger">
+          <div class="inner">
+            <h3>{{FailedTest}}</h3>
+
+            <p>Failed</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-thumbsdown"></i>
+          </div>
+          <a href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=9" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+      <!-- ./col -->
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-warning">
+          <div class="inner">
+            <h3>{{UnProcessedTest}}</h3>
+
+            <p>Un-Processed</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-help-circled"></i>
+          </div>
+          <a  href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=3" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-primary">
+          <div class="inner">
+            <h3>{{InqueueTest}}</h3>
+
+            <p>In-Queue</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-arrow-right-a"></i>
+          </div>
+          <a  href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=0" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-info">
+          <div class="inner">
+            <h3>{{InProgressTest}}</h3>
+
+            <p>In-Progress</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-playstation"></i>
+          </div>
+          <a  href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=1" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-3 col-xs-6">
+        <!-- small box -->
+        <div class="small-box bg-gray">
+          <div class="inner">
+            <h3>{{CancelledTest}}</h3>
+
+            <p>Cancelled</p>
+          </div>
+          <div class="icon">
+            <i class="ion ion-close-circled"></i>
+          </div>
+          <a href="#/Website/{{WebsiteId}}/Report?StartDate={{date.startDate.format('MM-DD-YYYY')}}&EndDate={{date.endDate.format('MM-DD-YYYY')}}&State=5"
+             class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="row">
+      <!-- left column -->
+      <div class="col-sm-12">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="box-header with-border" class="col-sm-12"></div>
+          <!-- /.box-header -->
+          <!-- form start -->
+          <form class="form-horizontal col-sm-12">
+              <div class="form-group row pd10">
+                <div class="col-sm-12">&nbsp;</div>
+                <label class="control-label">Range</label>
+                <div class="col-sm-2">
+                  <input date-range-picker class="form-control date-picker" type="text" ng-model="date"
+                         options="{locale:{format: 'MM/DD/YYYY'}}"/>
+                </div>
+                  <label class="col-sm-1 control-label">Website</label>
+                <div class="col-sm-2">
+                  <select ng-change="" class="form-control" ng-model="WebsiteId"
+                          ng-options="website.Id as website.Name for website in WebsiteList" name="WebsiteId" required>
+                  </select>
+                </div>
+
+                <div class="col-sm-2">
+                  <button class="btn btn-primary" type="button" ng-click="onWebsiteChange()">Show</button>&nbsp;
+                  <a class="btn btn-primary" ui-sref="Website.TestCat({ WebsiteId: WebsiteId})">Go To Website</a>
+                </div>
+              </div>
+
+              <div class="form-group row pd10">
+              <div class="col-6">
+                <div id="cv" class="col-xs-12 col-md-12 col-xl-12">
+                  <canvas tc-chartjs-line chart-options="options" chart-data="data"  chart-click="onChartClick(event)"
+                          chart-legend="lineChart"></canvas>
+                </div>
+              </div>
+              <div class="col-6">
+                <div class="col-xs-12 col-md-12 col-xl-12" id="pieCP">
+                  <canvas tc-chartjs-doughnut chart-options="pieOptions" chart-data="pieDataPassed"></canvas>
+                  <div class="col-md-2 col-md-offset-4"><b>Passed</b></div>
+                </div>
+                <div class="col-xs-12 col-md-12 col-xl-12" id="pieCF">
+                  <canvas tc-chartjs-doughnut chart-options="pieOptions" chart-data="pieDataFailed"></canvas>
+                  <div class="col-md-2 col-md-offset-4"><b>Failed</b></div>
+                </div>
+              </div>
+              </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<style type="text/css">
+  #cv canvas {
+    width: 100% !important;
+    height: 340px !important;
+  }
+
+  #pieCP canvas, #pieCF canvas {
+    width: 100% !important;
+    height: 300px !important;
+    margin-top: 20px;
+  }
+
+  .tc-chart-js-legend li span {
+    width: 25px;
+    height: 25px;
+    display: block;
+    float: left;
+    margin-right: 10px;
+  }
+
+  .tc-chart-js-legend {
+    list-style-type: none;
+    padding-left: 0px;
+    float: right;
+    padding-top: 23px;
+  }
+
+
+</style>

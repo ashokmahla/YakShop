@@ -1,0 +1,38 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 ng-if="!IsEditMode">Create Api Category - {{::Website.Name}}</h3>
+            <h3 ng-if="IsEditMode">Update Api Category - {{::Website.Name}}</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form class="form-horizontal" name="ApiCategoriesForm" ng-submit="ApiCategoriesForm.$valid && addUpdateCat()">
+            <div class="card-body">
+
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" placeholder="Category Name" name="ApiCategoryName" ng-model="ApiCategory.Name" required>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+                <textarea type="text" name="ApiCategoryDescription" class="form-control" placeholder="Description" ng-model="ApiCategory.Description" ></textarea>
+              </div>
+
+              <div class="form-group col-sm-6 col-centered">
+                  <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

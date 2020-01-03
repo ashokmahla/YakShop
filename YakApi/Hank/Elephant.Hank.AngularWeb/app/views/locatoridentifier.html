@@ -1,0 +1,44 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Locator Identifier - <small>{{Website.Name}} - {{Page.Value}}</small></h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a ui-sref="Website.PagesLocatorIdentifierAdd({ WebsiteId: stateParamWebsiteId, PageId: stateParamPageId })" class="float-right fa fa-plus-circle add-icon" title="Add New Locator Identifier"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllLocatorIdentifiers()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-3">Display Name</th>
+                <th class="col-sm-4">Value</th>
+                <th class="col-sm-2">Locator</th>
+                <th class="col-sm-2 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="locatorIdentifier in LocatorIdentifierList| orderBy:'DisplayName'">
+                <td class="col-sm-1">{{locatorIdentifier.Id}}</td>
+                <td class="col-sm-3">{{locatorIdentifier.DisplayName}}</td>
+                <td class="col-sm-4" style="word-break: break-all;">{{locatorIdentifier.Value}}</td>
+                <td class="col-sm-2">{{locatorIdentifier.LocatorValue}}</td>
+                <td class="col-sm-2 text-center">
+                  <a ng-if="Authentication.CanWrite" ui-sref="Website.PagesLocatorIdentifierUpdate({ WebsiteId: stateParamWebsiteId, PageId: stateParamPageId, LocatorIdentifierId: locatorIdentifier.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                  <a ng-if="IsAdmin" ng-click="deleteLocatorIdentifierById(locatorIdentifier.Id)"  class="delete-icon fa fa-minus-circle pdl10" title="Delete"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

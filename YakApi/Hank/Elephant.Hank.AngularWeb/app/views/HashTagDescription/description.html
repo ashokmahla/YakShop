@@ -1,0 +1,24 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Hash Tag Description</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ui-sref="HashTagDescription.AddUpdate({Id:1})" class="float-right fa fa-edit add-icon" title="Update Description"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <div style="margin-left: 2%;   margin-right: 2%;" ng-bind-html="HashTagDescription.Description"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

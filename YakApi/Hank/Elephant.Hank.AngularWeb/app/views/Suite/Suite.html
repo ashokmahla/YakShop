@@ -1,0 +1,42 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Suites</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a  ng-if="Authentication.CanWrite" ui-sref="Website.SuiteAdd({ WebsiteId: stateParamWebsiteId })"
+                    class="float-right fa fa-plus-circle add-icon" title="Add New Test Suite"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive" ng-init="getAllSuites()">
+            <table class="table table-hover table-bordered">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-10">Name</th>
+                <th class="col-sm-1 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="suite in SuiteList | orderBy:'Id'">
+                <td class="col-sm-1">{{suite.Id}}</td>
+                <td class="col-sm-10">{{suite.Name}}</td>
+                <td class="col-sm-1 text-center">
+                  <a ng-if="Authentication.CanWrite" ui-sref="Website.SuiteUpdate({ WebsiteId: stateParamWebsiteId, SuiteId: suite.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>
+
+

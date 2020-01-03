@@ -1,0 +1,40 @@
+<div class="tab-pane active">
+  <form class="form-horizontal" name="GroupWebsiteModuleForm"
+        ng-submit="GroupWebsiteModuleForm.$valid && onGroupWebsiteModuleSubmit()">
+    <div class="card-body table-responsive" style="padding-top: 0px">
+
+      <table class="table table-hover table-bordered">
+        <tr class="row">
+          <th class="col-sm-1">Sno</th>
+          <th class="col-sm-7">Module</th>
+          <th class="col-sm-1">Read</th>
+          <th class="col-sm-1">Write</th>
+          <th class="col-sm-1">Delete</th>
+          <th class="col-sm-1">Execute</th>
+        </tr>
+        <tr class="row" ng-repeat="groupModuleAccess in GroupModuleAccessList | orderBy:'Id'">
+          <td class="col-sm-1">{{$index + 1}}</td>
+          <td class="col-sm-7">
+            {{groupModuleAccess.ModuleName}}
+          </td>
+          <td class="col-sm-1">
+            <input type="checkbox" ng-model="groupModuleAccess.CanRead" disabled="disabled"/>
+          </td>
+          <td class="col-sm-1">
+            <input type="checkbox" ng-model="groupModuleAccess.CanWrite"/>
+          </td>
+          <td class="col-sm-1">
+            <input type="checkbox" ng-model="groupModuleAccess.CanDelete"/>
+          </td>
+          <td class="col-sm-1">
+            <input ng-if="groupModuleAccess.IsModuleExecutable" type="checkbox"
+                   ng-model="groupModuleAccess.CanExecute"/>
+          </td>
+        </tr>
+      </table>
+      <div class="form-group col-sm-6 col-centered pd10">
+        <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+      </div>
+    </div>
+  </form>
+</div>

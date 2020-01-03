@@ -1,0 +1,46 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Browsers</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ui-sref="Browser.Add" class="float-right fa fa-plus-circle add-icon" title="Add New Browser"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllBrowsers()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-3">Display name</th>
+                <th class="col-sm-3">Config name</th>
+                <th class="col-sm-2">Platform</th>
+                <th class="col-sm-2">Version</th>
+                <th class="col-sm-1 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="Browser in BrowserList | orderBy:'Id'">
+                <td class="col-sm-1">{{Browser.Id}}</td>
+                <td class="col-sm-3">{{Browser.DisplayName}}</td>
+                <td class="col-sm-3">{{Browser.ConfigName}}</td>
+                <td class="col-sm-2">{{Browser.Platform}}</td>
+                <td class="col-sm-2">{{Browser.Version}}</td>
+                <td class="col-sm-1 text-center">
+                  <a ui-sref="Browser.Update({ Id: Browser.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>
+

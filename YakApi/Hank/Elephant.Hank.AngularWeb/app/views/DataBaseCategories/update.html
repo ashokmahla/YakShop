@@ -1,0 +1,38 @@
+<section class="content" ng-init="onDataBaseCategoriesUpdatePageLoad()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Edit Data Base Category for Website - {{Website.Name}}</h3>
+          </div>
+          <!-- /.card-header -->
+          <form class="form-horizontal" name="DataBaseCategoriesForm" ng-submit="DataBaseCategoriesForm.$valid && onDataBaseCategoriesUpdatePageSubmit()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Data Base Category Name</label>
+                <input type="text" class="form-control" placeholder="Data Base Category Name" name="DataBaseCategoryName"
+                       ng-model="DataBaseCategory.Name" required>
+                <span ng-show="DataBaseCategoriesForm.DataBaseCategoryName.$touched || DataBaseCategoriesForm.$submitted">
+                  <small class="help-block"  ng-show="DataBaseCategoriesForm.DataBaseCategoryName.$error.required"  style="color:red">Please enter Name.</small>
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label >Description</label>
+                <textarea type="text" name="DataBaseCategoryDescription" class="form-control" placeholder="Description"
+                          ng-model="DataBaseCategory.Description" ></textarea>
+              </div>
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,37 @@
+<div class="tab-pane active">
+  <div class="row pd5 col-centered">
+    <div class="col-sm-5">
+      <div class="card-body table-responsive" style="padding-top: 0px">
+        <table class="table table-hover table-bordered">
+          <tr class="row">
+            <th class="col-sm-8">Users</th>
+            <th class="col-sm-4">Add</th>
+          </tr>
+          <tr class="row" ng-repeat="user in UserList | orderBy:'Id'">
+            <td class="col-sm-8">
+              {{user.UserName}}
+            </td>
+            <td class="col-sm-4"><a style="cursor: pointer;" ng-click="onClickAddUserToGroup(user.Id)" ><i class="fa fa-chevron-right fa-pull-right"></i></a></td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-1">&nbsp;</div>
+    <div class="col-sm-5">
+      <div class="card-body table-responsive" style="padding-top: 0px">
+        <table class="table table-hover table-bordered">
+          <tr class="row">
+            <th class="col-sm-3">Remove</th>
+            <th class="col-sm-9">User in Group</th>
+          </tr>
+          <tr class="row" ng-repeat="user in GroupUserList | orderBy:'Id'">
+            <td class="col-sm-3"><a style="cursor: pointer;" ng-click="onClickRemoveUserFromGroup(user.UserId)"><i class="fa fa-chevron-left fa-pull-left"></i></a></td>
+            <td  class="col-sm-9">
+              {{ user.UserName }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

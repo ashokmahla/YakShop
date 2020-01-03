@@ -1,0 +1,98 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3 ng-if="Website.Id == undefined">
+              Create New Website
+            </h3>
+            <h3 ng-if="Website.Id">
+              Edit {{::Website.Name}} Website
+            </h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form class="form-horizontal" name="WebsiteForm" ng-submit="WebsiteForm.$valid && saveWebsite()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Name</label>
+                <input type="text" class="form-control" ng-model="Website.Name" name="Name" placeholder="Name" required>
+                <span ng-show="WebsiteForm.Name.$touched || WebsiteForm.$submitted">
+                    <small class="help-block" ng-show="WebsiteForm.Name.$error.required" style="color:red">Please enter name.</small>
+                  </span>
+              </div>
+              <div class="form-group">
+                <label>Description</label>
+
+                <textarea type="text" class="form-control" ng-model="Website.Description" name="Description"
+                          placeholder="Description"></textarea>
+              </div>
+
+              <div class="form-group" ng-repeat="environment in EnvironmentList">
+                <label>Url for {{environment.Name}}</label>
+
+                <input type="url" class="form-control" ng-model="environment.Url" name="{{environment.Name}}" placeholder="Url" oninvalid="this.setCustomValidity('Please enter url.')" required="Please enter url">
+              </div>
+
+              <div class="form-group">
+                <label>Is Angular</label>
+
+                <input type="checkbox" ng-model="Website.IsAngular" name="IsAngular" placeholder="IsAngular">
+              </div>
+
+              <div class="form-group">
+                <label>Buil URL Template</label>
+
+                <input type="text" class="form-control" ng-model="Website.Settings.BuildUrlTemplate" name="BuildUrlTemplate" placeholder="Build test url template">
+              </div>
+
+              <div class="form-group">
+                <label>Selenium address</label>
+
+                <input type="url" class="form-control" ng-model="Website.Settings.SeleniumAddress"
+                       name="SeleniumAddress"
+                       placeholder="Selenium url address" required>
+              </div>
+
+              <div class="form-group">
+                <label>Take Screen Shot On Url Changed</label>
+
+
+                <select class="form-control" ng-model="Website.Settings.TakeScreenShotOnUrlChanged"
+                        ng-options="browser.Id as browser.DisplayName for browser in BrowserList">
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Browsers:</label>
+
+                <div class="col-md-12">
+                  <label class="col-md-12 paddingLeftZero">
+                    <input ng-change="markUnMarkAllBrowser()" type="checkbox" ng-model="SelectAllBrowsers"/>
+                    All
+                  </label>
+
+                  <label ng-repeat="browser in BrowserList | orderBy:'Id'" class="col-md-4 ellipsis paddingLeftZero"
+                         title="{{browser.DisplayName}}">
+                    <input type="checkbox" ng-model="browser.Checked" ng-change="markUnMarkAllBrowser(browser)"/>
+                    {{browser.DisplayName}}
+                  </label>
+
+                </div>
+              </div>
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+            </div>            <!-- /.box-body -->
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

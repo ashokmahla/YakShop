@@ -1,0 +1,40 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Groups</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ui-sref="Group.Add" class="float-right fa fa-plus-circle add-icon" title="Add New Group"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="onLoadList()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-7">Group name</th>
+                <th class="col-sm-3">Modified By</th>
+                <th class="col-sm-1 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="group in GroupList | orderBy:'Id'">
+                <td class="col-sm-1">{{group.Id}}</td>
+                <td class="col-sm-7"><a ui-sref="Group.Manage.Website({GroupId: group.Id})"> {{group.GroupName}} </a></td>
+                <td class="col-sm-3"> {{group.ModifiedByUserName}} </td>
+                <td class="col-sm-1 text-center">
+                  <a ui-sref="Group.Update({ GroupId: group.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                </td>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

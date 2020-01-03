@@ -1,0 +1,61 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Test Script List</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a ui-sref="Website.TestCatTestAdd({ WebsiteId: stateParamWebsiteId, TestCatId: TestCatId })" class="float-right fa fa-plus-circle add-icon" title="Add New Test Script"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllTests();loadData(true)">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-2">Test Script Name</th>
+                <th class="col-sm-3">Description</th>
+                <th class="col-sm-2">Category
+                  <select class="form-control" ng-change="onFilterChange()" ng-model="categoryFilter"
+                          ng-options="test.CategoryId as test.CategoryName for test in UniqueTestListByCategory |orderBy:'CategoryId'">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </th>
+                <th class="col-sm-2"> Created By
+                  <select class="form-control" ng-change="onFilterChange()" ng-model="createdByFilter"
+                          ng-options="test.CreatedBy as test.CreatedByFullName for test in UniqueTestListByCreatedBy|orderBy:'CreatedBy'">
+                    <option style="display:none" value="">--Select--</option>
+                  </select>
+                </th>
+                <th class="col-sm-2 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="test in TestList | orderBy:'Id'">
+                <td class="col-sm-1">{{test.Id}}</td>
+                <td class="col-sm-2">
+                  <a ui-sref="Website.TestData({ WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: test.Id })">{{test.TestName}}</a>
+                </td>
+                <td class="col-sm-3">{{test.Description}}</td>
+                <td class="col-sm-2">{{test.CategoryName}}</td>
+                <td class="col-sm-2">{{ test.CreatedByFullName }}</td>
+                <td class="col-sm-2 text-center">
+                  <a ng-if="Authentication.CanWrite && (test.TestCaseAccessStatus==1 || test.CreatedByFullName==LoggeddInUserName)"
+                     ui-sref="Website.TestCatTestUpdate({ WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: test.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                  <a style="pointer:cursor" ng-click="onQueueClick(test.Id)" ng-if="Authentication.CanExecute" class="add-icon-sm fa fa-upload pdl10" title="Queue"></a>
+                  <a style="pointer:cursor" ng-click="deleteTestById(test.Id)" ng-if="IsAdmin" class="delete-icon fa fa-minus-circle pdl10" title="Delete"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>
+

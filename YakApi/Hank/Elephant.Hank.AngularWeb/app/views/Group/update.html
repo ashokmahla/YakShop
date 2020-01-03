@@ -1,0 +1,37 @@
+<section class="content" ng-init="onLoadEdit()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Update Group</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->        <!-- form start -->
+          <form class="form-horizontal" name="GroupForm" ng-submit="GroupForm.$valid && onAddSubmit()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Group Name</label>
+                <input type="text" class="form-control" ng-model="Group.GroupName" name="GroupName"  placeholder="Group Name" required>
+                <span ng-show="GroupForm.GroupName.$touched || GroupForm.$submitted">
+        <small class="help-block" ng-show="GroupForm.GroupName.$error.required" style="color:red">Please enter group name.
+        </small>
+        </span>
+              </div>
+
+
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

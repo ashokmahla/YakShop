@@ -1,0 +1,46 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Data Base Categories for - {{Website.Name}}</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ng-if="Authentication.CanWrite" ui-sref="Website.DataBaseCategoriesAdd({ WebsiteId: stateParamWebsiteId })"
+                   class="float-right fa fa-plus-circle add-icon" title="Add Data Base Category"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive" ng-init="onDataBaseCategoriesListPageLoad()">
+            <table class="table table-hover table-bordered" ng-init="getAllTestCat()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-3">Name</th>
+                <th class="col-sm-7">Description</th>
+                <th class="col-sm-1 text-center" ng-if="Authentication.CanWrite">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="dataBaseCategory in DataBaseCategories | orderBy:'Id'">
+                <td class="col-sm-1">{{dataBaseCategory.Id}}</td>
+                <td class="col-sm-3">
+                  <a ui-sref="Website.DataBaseConnection({ WebsiteId: stateParamWebsiteId, DataBaseCategoryId: dataBaseCategory.Id })">
+                    {{dataBaseCategory.Name}}
+                  </a>
+                </td>
+                <td class="col-sm-7"> {{dataBaseCategory.Description}} </td>
+                <td class="col-sm-1 text-center" ng-if="Authentication.CanWrite">
+                  <a  ui-sref="Website.DataBaseCategoriesUpdate({ WebsiteId: stateParamWebsiteId, DataBaseCategoryId: dataBaseCategory.Id })"
+                      class="edit-icon fa fa-edit" title="Edit"></a>
+                </td>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

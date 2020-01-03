@@ -1,0 +1,74 @@
+<section class="content" ng-init="onLoadList();">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Shared Test Data for
+                  <small> {{SharedTest.WebsiteName}} - {{SharedTest.TestName}}</small>
+                </h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a  ng-if="Authentication.CanWrite" ui-sref="Website.SharedTestDataAdd({WebsiteId: stateParamWebsiteId, SharedTestId: SharedTest.Id, ExecutionSequence: LastSeqNumber })"
+                    class="float-right fa fa-plus-circle add-icon" title="Add New Test Script"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered">
+              <tr class="row">
+                <th class="col-sm-1">Sno</th>
+                <th class="col-sm-1">Display Name</th>
+                <th class="col-sm-1">Skip</th>
+                <th class="col-sm-1">Action</th>
+                <th class="col-sm-1">Value</th>
+                <th class="col-sm-1">Variable Name</th>
+                <th class="col-sm-3">Description</th>
+                <th class="col-sm-1">Modified By</th>
+                <th class="col-sm-2 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-if="SharedTestDataList.length<=0">
+                <td class="col-sm-12" colspan="5"> No Data Yet</td>
+              </tr>
+              <tr class="row" ng-if="SharedTestDataList.length>0" ng-repeat="sharedTestData in SharedTestDataList | orderBy:'ExecutionSequence'"
+                  ng-class="sharedTestData.IsIgnored ? 'alert-danger' : ''">
+                <td class="col-sm-1">{{sharedTestData.ExecutionSequence}}</td>
+                <td class="col-sm-1" ng-if="sharedTestData.StepType==4"><b>Api Test Step:-</b> {{sharedTestData.ApiTestData.EndPoint}}</td>
+                <td class="col-sm-1" ng-if="sharedTestData.StepType!=4">{{sharedTestData.DisplayNameValue}}</td>
+                <td class="col-sm-1">{{sharedTestData.IsIgnored}}</td>
+                <td class="col-sm-1" ng-if="sharedTestData.StepType!=4">{{sharedTestData.ActionValue}}</td>
+                <td class="col-sm-1" ng-if="sharedTestData.StepType==4"> {{sharedTestData.ApiTestData.ApiUrl}}</td>
+                <td class="col-sm-1" ng-class="sharedTestData.css">{{sharedTestData.Value}}</td>
+                <td class="col-sm-1" ng-class="sharedTestData.css">{{sharedTestData.VariableName}}</td>
+                <td class="col-sm-3">{{sharedTestData.Description}}</td>
+                <td class="col-sm-1">{{sharedTestData.ModifiedByUserName}}</td>
+                <td class="col-sm-2 text-center">
+                  <a ng-show="$index == 0" ng-if="Authentication.CanWrite"
+                     ui-sref="Website.SharedTestDataAdd({WebsiteId: stateParamWebsiteId, SharedTestId: SharedTest.Id, ExecutionSequence: sharedTestData.ExecutionSequence })"
+                     class="add-icon-sm fa fa-angle-double-up" title="Add Before"></a>
+
+                  <a ng-if="Authentication.CanWrite"
+                     ui-sref="Website.SharedTestDataAdd({WebsiteId: stateParamWebsiteId, SharedTestId: SharedTest.Id, ExecutionSequence: sharedTestData.ExecutionSequence + 1 })"
+                     class="add-icon-sm fa fa-angle-double-down pdl10" title="Add After">
+                  </a>
+
+                  <a ng-if="Authentication.CanWrite"
+                     ui-sref="Website.SharedTestDataUpdate({WebsiteId: stateParamWebsiteId, SharedTestId: SharedTest.Id, TestDataId: sharedTestData.Id })"
+                     class="edit-icon fa fa-edit pdl10" title="Update"></a>
+
+                  <a ng-if="Authentication.CanDelete" ng-if="IsAdmin" ng-click="deleteSharedTestData(sharedTestData.Id)" href="#" onclick="return false;"
+                     class="delete-icon fa fa-minus-circle pdl10" title="Delete"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

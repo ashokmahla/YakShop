@@ -1,0 +1,12 @@
+{
+  "name": "webquoteang",
+  "version": "0.0.0",
+  "dependencies": {
+    "promise": "^7.3.1",
+    "protractor": "^5.3.2",
+    "protractor-hotkeys": "0.0.5",
+    "q-io": "^1.13.5",
+    "request": "^2.87.0",
+    "xmldom": "^0.1.27"
+  }
+}

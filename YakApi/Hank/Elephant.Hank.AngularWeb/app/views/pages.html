@@ -1,0 +1,47 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Pages - {{Website.Name}}</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a  ng-if="Authentication.CanWrite" ui-sref="Website.PagesAdd({ WebsiteId: stateParamWebsiteId })"
+                    class="float-right fa fa-plus-circle add-icon" title="Add New Page for {{Website.Name}}"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllPages()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-2">Value</th>
+                <th class="col-sm-2">Website</th>
+                <th class="col-sm-5">Description</th>
+                <th class="col-sm-2 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-repeat="page in PagesList | orderBy:'Value'">
+                <td class="col-sm-1">{{page.Id}}</td>
+                <td class="col-sm-2">
+                  <a ui-sref="Website.PagesLocatorIdentifier({ WebsiteId: stateParamWebsiteId, PageId: page.Id })">{{page.Value}}</a>
+                </td>
+                <td class="col-sm-2">{{page.WebsiteName}}</td>
+                <td class="col-sm-5"> {{page.Description}}</td>
+                <td class="col-sm-2 text-center" ng-if="Authentication.CanWrite">
+                  <a ui-sref="Website.PagesUpdate({ WebsiteId: stateParamWebsiteId, PageId: page.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                  <a style="pointer:cursor" ng-if="IsAdmin" ng-click="deletePageById(page.Id)" class="delete-icon fa fa-minus-circle pdl10" title="Delete"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,110 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Data Base Logs</h3>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+
+            <div class="row">
+              <div class="col-sm-4">
+                <input date-range-picker class="form-control date-picker" type="text" ng-model="date" options="{timePicker: true,format: 'MM/DD/YYYY h:mm a',timePickerIncrement: 1}"/>
+              </div>
+
+              <div class="col-sm-4">
+                <button class="btn btn-primary" ng-click="dateSelected()">Filter</button>
+              </div>
+            </div>
+
+            <div class="row" ng-init="getAllDbLog();">
+              <div class="col-sm-6">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title"></h3>
+
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body table-responsive no-padding" style=" height: 500px; overflow: scroll;overflow-x: scroll;"
+                       when-scroll-ends="getAllDbLog()">
+
+                    <table class="table table-hover table-bordered">
+                      <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th class="col-md-3">
+                          Table Type
+                          <select class="form-control" ng-change="queryReport()" ng-model="TableType"
+                                  ng-options="TT.Value as TT.Value for TT in TableTypeList | orderBy: 'Id'" name="TableType">
+                            <option style="display:none" value="">All</option>
+                          </select>
+                        </th>
+                        <th>Operation Type</th>
+                        <th>Updated By</th>
+                        <th>Actions</th>
+                      </tr>
+                      </thead>
+                      <tbody ng-if="TestDataList.length==0">
+                      <tr>
+                        <td colspan="4"> No Data Yet</td>
+                      </tr>
+                      </tbody>
+                      <tbody ng-repeat="dbLog in DbLogList | orderBy:'Id'" ng-if="DbLogList.length>0">
+                      <tr>
+                        <td ><a href="" ng-click="showComparision(dbLog.Id)" style="cursor: pointer">{{dbLog.Id}}</a>
+                        </td>
+                        <td>{{dbLog.TableType}}</td>
+                        <td>{{dbLog.OperationType}}</td>
+                        <td>{{dbLog.LastUpdatedBy}}</td>
+                        <td>
+                          <a href="" style="cursor: pointer" class="fa fa-undo text-danger" ng-click="rollData(dbLog.Id,true)" title="Roll Back"></a> |
+                          <a href="" style="cursor: pointer" class="fa fa-redo" ng-click="rollData(dbLog.Id,false)" title="Roll Forward"></a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <!--<td colspan="4" ng-if="dbLog.showComparision">
+
+                        </td>-->
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+              </div>
+
+              <div class="col-sm-6">
+                <div class="box">
+                  <div class="box-header">
+                    <h3 class="box-title"></h3>
+
+                  </div>
+                  <!-- /.box-header -->
+                  <div class="box-body table-responsive no-padding" style=" height: 500px; overflow: scroll;overflow-x: scroll;">
+                    <table class="table table-bordered table-striped" ng-if="ComparisionObject.length!=0">
+                      <tr>
+                        <th class="col-md-2">Keys</td>
+                        <th>Values</td>
+                      </tr>
+                      <tr ng-repeat="comp in ComparisionObject">
+                        <td> {{comp.Key}}</td>
+                        <td class="evalComp" data-setattr="false" data-prev="{{comp.PreviousValue}}" data-new="{{comp.NewValue}}"> </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

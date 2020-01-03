@@ -1,0 +1,48 @@
+<section class="content" ng-init="getSchedulerHistory()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Scheduler history - {{Scheduler.Name}}</h3>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-2">Group name</th>
+                <th class="col-sm-2">Queued At</th>
+                <th class="col-sm-2">Last update</th>
+                <th class="col-sm-1">Status</th>
+                <th class="col-sm-2">Email status</th>
+                <th class="col-sm-2 text-center">Reports</th>
+              </tr>
+              <tr class="row" ng-repeat="schedule in SchedulerHistory | orderBy:'-Id'" ng-class="schedule.IsDisabled ? 'alert-danger': ''">
+                <td class="col-sm-1">{{$index+1}}</td>
+                <td class="col-sm-2">{{::schedule.GroupName}}</td>
+                <td class="col-sm-2">{{::schedule.CreatedOn | date:'MM-dd-yyyy hh:mm a'}}</td>
+                <td class="col-sm-2">{{::schedule.ModifiedOn | date:'MM-dd-yyyy hh:mm a'}}</td>
+                <td class="col-sm-1">{{::schedule.StatusText}}</td>
+                <td class="col-sm-2">{{::schedule.EmailStatusText}}</td>
+                <td class="col-sm-2 text-center">
+                  <a href="/#!/Website/{{StateParamsWebsiteId}}/Report/{{schedule.GroupName}}" title="View report"><i class="btn btn-primary fa fa-file-text"></i></a>
+                  <button ng-if="schedule.Status == 6 || schedule.ExtraDataPostedByCaller" title="Callback post data" ng-click="showExtraCallBackData(schedule)" class="btn btn-info fa fa-info"></button>
+                  <button ng-if="schedule.IsCancelAble" title="Cancel" ng-click="cancelExecution(schedule)" class="btn btn-danger fa fa-close"></button>
+                  <button ng-if="schedule.IsResumeAble" title="Resume" ng-click="cancelExecution(schedule)" class="btn btn-success fa fa-check"></button>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>
+

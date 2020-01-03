@@ -1,0 +1,41 @@
+<div style="padding-top: 10%;">
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <!-- left column -->
+        <div class="col-md-6">
+          <!-- general form elements -->
+          <div class="card card-primary card-outline">
+            <div class="card-header">
+              <h3>Login</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form name="frmLogin" ng-submit="frmLogin.$valid && loginUser()">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="UserName">Email address</label>
+                  <input type="email" id="UserName" class="form-control" ng-model="User.UserName" name="UserName" required minlength="8" error="(frmLogin.UserName.$touched || frmLogin.$submitted) && !frmLogin.UserName.$valid">
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" id="password" class="form-control" ng-model="User.Password" name="UserName" required minlength="8" error="(frmLogin.UserName.$touched || frmLogin.$submitted) && !frmLogin.UserName.$valid">
+                </div>
+
+                <div class="form-group col-sm-6 col-centered">
+                    <button type="submit" class="btn btn-block btn-primary btn-lg">Login</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+        <!--/.col (right) -->
+      </div>
+      <!-- /.row -->
+    </div><!-- /.container-fluid -->
+  </section>
+</div>

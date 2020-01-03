@@ -1,0 +1,39 @@
+<section class="content" ng-init="onLoadAdd()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3> Create New Locator</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->        <!-- form start -->
+          <form class="form-horizontal" name="LocatorForm" ng-submit="LocatorForm.$valid && addLocator()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Value</label>
+                <input type="text" class="form-control"  ng-model="Locator.Value" name="Value" placeholder="Value"
+                       required>
+                <span ng-show="LocatorForm.Value.$touched || LocatorForm.$submitted">
+        <small class="help-block" ng-show="LocatorForm.Value.$error.required" style="color:red">Please enter value.
+        </small>
+        </span>
+              </div>
+
+
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

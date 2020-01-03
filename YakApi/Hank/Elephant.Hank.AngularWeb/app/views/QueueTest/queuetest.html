@@ -1,0 +1,93 @@
+<div id="testQueueModal" class="modal fade col-sm-12">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Queue Test</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="modal-body">
+        <form name="TestQueueForm" ng-submit="TestQueueForm.$valid && addTestToTestQueue(WebsiteId)">
+
+          <div class="form-group">
+            <label >Url</label>
+
+              <select class="form-control" ng-model="TestQueue.Settings.UrlObj"
+                      ng-options="websiteUrl as websiteUrl.Url for websiteUrl in Website.WebsiteUrlList"
+                      name="BrowserId" required>
+                <option style="display:none" value="">--Select--</option>
+              </select>
+
+              <!--locator.Id as locator.Value for locator in LocatorList-->
+              <span ng-show="TestQueueForm.BrowserId.$touched || TestQueueForm.$submitted">
+              <small class="help-block" ng-show="TestQueueForm.BrowserId.$error.required" style="color:red">Please select url to test n.
+              </small>
+              </span>
+          </div>
+
+          <div class="form-group" ng-if="TestQueue.Settings.UrlObj.Id == 0">
+            <label >Url to test</label>
+
+              <input type="url" class="form-control" ng-model="TestQueue.Settings.CustomUrlToTest" name="CustomUrlToTest" placeholder="Url to test" required>
+                <span ng-show="TestQueueForm.CustomUrlToTest.$touched || TestQueueForm.$submitted">
+                <small class="help-block" ng-show="TestQueueForm.CustomUrlToTest.$error.required" style="color:red">Please enter URL to test.</small>
+              </span>
+          </div>
+
+          <div class="form-group">
+            <label >Selenium address</label>
+
+              <input type="url" class="form-control" ng-model="TestQueue.Settings.SeleniumAddress" name="SeleniumAddress"
+                     placeholder="Selenium url address" required>
+               <span ng-show="TestQueueForm.SeleniumAddress.$touched || TestQueueForm.$submitted">
+              <small class="help-block" ng-show="TestQueueForm.SeleniumAddress.$error.required" style="color:red">Please enter selenium address.
+              </small>
+              </span>
+          </div>
+
+          <div class="form-group">
+            <label >Take Screen Shot On Url Changed</label>
+              <select class="form-control" ng-model="TestQueue.Settings.TakeScreenShotOnUrlChanged"
+                      ng-options="browser.Id as browser.DisplayName for browser in BrowserList">
+                <option value="">--Select--</option>
+              </select>
+          </div>
+
+          <div class="form-group">
+            <label >Repeat # times</label>
+              <input type="number" class="form-control" ng-model="TestQueue.Settings.RepeatTimes" name="RepeatTimes" min="1" max="100" maxlength="3">
+          </div>
+
+
+          <div class="form-group">
+            <label >Browsers</label>
+              <label class="col-md-12 paddingLeftZero">
+                <input ng-change="markUnMarkAllBrowser()" type="checkbox" ng-model="SelectAllBrowsers" />
+                All
+              </label>
+          </div>
+          <div class="form-group">
+            <label ng-repeat="browser in BrowserList | orderBy:'Id'" class="col-sm-4 ellipsis paddingLeftZero valign-top" title="{{browser.DisplayName}}">
+            <input type="checkbox" ng-model="browser.Checked" ng-change="markUnMarkAllBrowser(browser)" />
+              {{browser.DisplayName}}
+            </label>
+            </div>
+          <br/>
+
+          <div class="form-row col-sm-12 col-centered">
+            <div class="form-group col-sm-4 offset-sm-2">
+              <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+            </div>
+            <div class="form-group col-sm-4">
+              <button type="button" class="btn btn-block btn-danger btn-lg" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div><!-- /.modal -->
+

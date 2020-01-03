@@ -1,0 +1,74 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Tickets</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ui-sref="Tickets.Add" class="float-right fa fa-plus-circle add-icon" title="Add New Ticket"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllTickets()">
+              <tr class="row">
+                <th class="col-sm-1">Id</th>
+                <th class="col-sm-2">
+                  <a href="" ng-click="sortType = 'Title' ; sortReverse = !sortReverse">
+                    Title
+                  </a>
+                </th>
+                <th class="col-sm-3">Description</th>
+                <th class="col-sm-1">
+                  <a href="" ng-click="sortType = 'TicketTypeText' ; sortReverse = !sortReverse">
+                    Type
+                  </a>
+                </th>
+                <th class="col-sm-1">
+                  <a href="" ng-click="sortType = 'TicketStatusText' ; sortReverse = !sortReverse">
+                    Status
+                  </a>
+                </th>
+                <th class="col-sm-1">
+                  <a href="" ng-click="sortType = 'PriorityText' ; sortReverse = !sortReverse">
+                    Priority
+                  </a>
+                </th>
+                <th class="col-sm-1">
+                  <a href="" ng-click="sortType = 'CreatedByUserName' ; sortReverse = !sortReverse">
+                    Created By
+                  </a>
+                </th>
+                <th class="col-sm-1">
+                  <a href="" ng-click="sortType = 'AssignedToUserName' ; sortReverse = !sortReverse">
+                    AssignedTo
+                  </a>
+                </th>
+                <th class="col-sm-1 text-center">Action</th>
+              </tr>
+
+              <tr class="row" ng-repeat="ticket in Tickets | orderBy:sortType:sortReverse">
+                <td class="col-sm-1">{{ticket.Id}}</td>
+                <td class="col-sm-2">{{ticket.Title}} </td>
+                <td class="col-sm-3">{{ticket.Description}}</td>
+                <td class="col-sm-1">{{ticket.TicketTypeText}}</td>
+                <td class="col-sm-1">{{ticket.TicketStatusText}}</td>
+                <td class="col-sm-1">{{ticket.PriorityText}}</td>
+                <td class="col-sm-1">{{ticket.CreatedByFullName}}</td>
+                <td class="col-sm-1">{{ticket.AssignedToFullName}}</td>
+                <td class="col-sm-1 text-center">
+                  <a ui-sref="Tickets.Update({ Id: ticket.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

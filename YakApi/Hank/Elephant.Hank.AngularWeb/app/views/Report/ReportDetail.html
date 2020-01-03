@@ -1,0 +1,302 @@
+<div id="blueimp-gallery" class="blueimp-gallery">
+  <!-- The container for the modal slides -->
+  <div class="slides"></div>
+  <!-- Controls for the borderless lightbox -->
+  <h3 class="title"></h3>
+  <a class="prev">‹</a>
+  <a class="next">›</a>
+  <a class="close">×</a>
+  <a class="play-pause"></a>
+  <ol class="indicator"></ol>
+  <!-- The modal dialog, which will be used to wrap the lightbox content -->
+  <div class="modal fade">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-hidden="true">&times;</button>
+          <h4 class="modal-title"></h4>
+        </div>
+        <div class="modal-body next"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left prev">
+            <i class="fa fa-arrow-left"></i>
+            Previous
+          </button>
+          <button type="button" class="btn btn-primary next">
+            Next
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<section class="content" ng-init="onLoadAdd()">
+  <div class="container-fluid" ng-init="getReportDetails()">
+    <div class="row pd10">
+      <div class="col-sm-12">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Details for <small> {{ReportDetail.TestName}}</small></h3>
+          </div>
+
+          <div class="panel-group card-body" id="accordion">
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+                  <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseOne">
+                      Basic Report Details
+                  </span><i class="indicator fa fa-minus pull-right"></i>
+                </h4>
+              </div>
+
+              <div id="collapseOne" class="panel-collapse collapse in">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <table class="table table-bordered table-striped">
+                        <tr>
+                          <td>Url tested</td>
+                          <td><a href="{{ReportDetail.JsonValue.UrlTested}}" target="_blank">{{ReportDetail.JsonValue.UrlTested}}</a></td>
+                        </tr>
+                        <tr>
+                          <td>Test Queue Id</td>
+                          <td>{{ReportDetail.JsonValue.TestQueueId}}</td>
+                        </tr>
+                        <tr>
+                          <td>Report Id</td>
+                          <td> {{ReportDetail.Id}}</td>
+                        </tr>
+                        <tr>
+                          <td>Execution Group</td>
+                          <td>{{ReportDetail.ExecutionGroup}}</td>
+                        </tr>
+                        <tr>
+                          <td>Suite Name</td>
+                          <td>{{ReportDetail.SuiteName}}</td>
+                        </tr>
+                        <tr>
+                          <td>Status</td>
+                          <td>{{ReportDetail.Passed}}</td>
+                        </tr>
+                        <tr>
+                          <td>Time Taken</td>
+                          <td>{{ReportDetail.TimeTaken}}</td>
+                        </tr>
+                        <tr>
+                          <td>Completed At</td>
+                          <td>{{ReportDetail.JsonValue.FinishedAt | date:'MM-dd-yyyy hh:mm a'}}</td>
+                        </tr>
+                        <tr>
+                          <td>Operating System</td>
+                          <td>{{ReportDetail.Os}}</td>
+                        </tr>
+                        <tr>
+                          <td>Browser Name</td>
+                          <td>{{ReportDetail.BrowserName}}</td>
+                        </tr>
+                        <tr>
+                          <td>Browser Version</td>
+                          <td>{{ReportDetail.BrowserVersion}}</td>
+                        </tr>
+                        <tr>
+                          <td>Last Step Executed</td>
+                          <td>{{ReportDetail.LastStepExecuted}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+        <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseVariables">
+            Variables</span><i class="indicator fa fa-plus pull-right"></i>
+                </h4>
+              </div>
+              <div id="collapseVariables" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                      <table class="table table-bordered table-striped">
+                        <tr class="row">
+                          <th class="col-sm-1">Sno</th>
+                          <th class="col-sm-2">Variable</th>
+                          <th class="col-sm-2">From</th>
+                          <th class="col-sm-7">Value</th>
+                        </tr>
+                        <tr class="row" ng-repeat="variableState in ReportDetail.JsonValue.VariableStateContainer">
+                          <td class="col-sm-1">{{$index + 1}}</td>
+                          <td class="col-sm-2">{{variableState.Name}}</td>
+                          <td class="col-sm-2">{{variableState.DisplayName}}</td>
+                          <td class="col-sm-7">{{variableState.Value}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+        <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseThree">
+            Logs
+        </span><i class="indicator fa fa-plus pull-right"></i>
+                </h4>
+              </div>
+              <div id="collapseThree" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12 table-responsive">
+                      <table class="table table-bordered table-striped">
+                        <tr class="row">
+                          <th class="col-sm-1">Sno</th>
+                          <th class="col-sm-3">Key</th>
+                          <th class="col-sm-8">Value</th>
+                        </tr>
+                        <tr class="row" ng-repeat="log in ReportDetail.JsonValue.LogContainer">
+                          <td class="col-sm-1">{{$index + 1}}</td>
+                          <td class="col-sm-3">{{log.Name}}</td>
+                          <td class="col-sm-8">{{log.Value}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+        <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseFour">
+           Final Screen Shot
+        </span><i class="indicator fa fa-plus pull-right"></i>
+                </h4>
+              </div>
+              <div id="collapseFour" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12">
+                      <a target="new" href="{{ ReportDetail.ScreenShotUrl }}">
+                        <img ng-src="{{ ReportDetail.ScreenShotUrl }}" class="col-sm-12"/></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+        <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseFive">
+           Screen Shot List
+        </span><i class="indicator fa fa-plus pull-right"></i>
+                </h4>
+              </div>
+              <div id="collapseFive" class="panel-collapse collapse">
+                <div class="card-body">
+                  <div class="row" id="links">
+                    <div class="col-sm-2" ng-repeat="screenShot in ReportDetail.JsonValue.ScreenShotArray">
+                      <div class="card">
+                        <div class="card-body">
+                          <a  href="{{ ReportDetail.ImageViewUrl + screenShot.Value }}" class="thumbnail col-sm-12" data-gallery>
+                            <img class="card-img" src="{{ ReportDetail.ImageViewUrl + screenShot.Value.replace('.png', '-t200.png') }}"
+                                 alt="{{ ReportDetail.ImageViewUrl + screenShot.Value.replace('.png', '-t200.png') }}">
+                          </a>
+                          <p class="card-text" title="{{screenShot.Name}}"> {{screenShot.Name.substring(0, 35)}}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel panel-default">
+              <div class="panel-heading">
+                <h4 class="panel-title">
+        <span class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" data-href="#collapseTwo">
+          Full Trace
+        </span><i class="indicator fa fa-plus pull-right"></i>
+                </h4>
+              </div>
+              <div id="collapseTwo" class="panel-collapse collapse">
+                <div class="panel-body">
+                  <div class="row">
+                    <div class="col-sm-12  table-responsive">
+                      <table class="table table-bordered table-striped">
+                        <tr class="row">
+                          <th class="col-sm-1">Type</th>
+                          <th class="col-sm-1">Matcher</th>
+                          <th class="col-sm-1">Passed</th>
+                          <th class="col-sm-1">Expected</th>
+                          <th class="col-sm-1">Actual</th>
+                          <th class="col-sm-7">Message</th>
+                        </tr>
+                        <tr class="row" ng-repeat="trace in ReportDetail.JsonValue.TraceFull"
+                            style="color: {{trace.Message != 'Passed.' ? 'red' : ''}}">
+                          <td class="col-sm-1">{{trace.Type}}</td>
+                          <td class="col-sm-1"> {{trace.MatcherName}}</td>
+                          <td class="col-sm-1"> {{trace.passed_}}</td>
+                          <td class="col-sm-1"> {{trace.Expected}}</td>
+                          <td class="col-sm-1"> {{trace.Actual}}</td>
+                          <td class="col-sm-7">{{trace.Message}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <script type="text/javascript">
+            $('.panel-heading').click(function () {
+              var a = $(this).find("span.accordion-toggle").attr('data-href');
+              $(a).toggleClass('in  ');
+              var collapseIcon = $(a).prev('.panel-heading').find("i.indicator");
+              if(collapseIcon.hasClass("fa-plus")) {
+                collapseIcon.removeClass("fa-plus");
+                collapseIcon.addClass("fa-minus");
+              } else {
+                collapseIcon.removeClass("fa-minus");
+                collapseIcon.addClass("fa-plus");
+              }
+            });
+          </script>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style type="text/css">
+  td {
+    /* These are technically the same, but use both */
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    -ms-word-break: break-all;
+    /* This is the dangerous one in WebKit, as it breaks things wherever */
+    word-break: break-all;
+    /* Instead use this non-standard one: */
+    word-break: break-word;
+
+    /* Adds a hyphen where the word breaks, if supported (No Blink) */
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+</style>

@@ -1,0 +1,125 @@
+<section class="content" ng-init="onLoadList();">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-10">
+                <h3>Test Data for <small> {{Website.Name}} - {{Test.TestName}}</small></h3>
+              </div><!-- /.col -->
+              <div class="col-sm-2">
+                <a ng-if="Authentication.CanExecute" class="float-right fa fa-upload add-icon pdl10" style="float:right;cursor: pointer" ng-click="onQueueClick();" title="Queue"></a>
+
+                <a class="float-right fa fa-file-excel add-icon pdl10" style="float:right;cursor: pointer;margin-right: 5px;"
+                   ng-csv="getCsvData()" csv-header="getCsvHeaders()" lazy-load="true" filename="{{Test.WebsiteName}} - {{Test.TestName}}.csv" title="To Excel"></a>
+
+                <a ng-if="Authentication.CanWrite" ui-sref="Website.TestDataAdd({WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: Test.Id, ExecutionSequence: LastSeqNumber })"
+                   class="float-right fa fa-plus-circle add-icon" title="Add Data Data"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive" ng-init="onDataBaseConnectionListPageLoad()">
+            <table class="table table-hover table-bordered">
+              <tr class="row">
+                <th class="col-sm-1">Sno</th>
+                <th class="col-md-2">Name</th>
+                <th class="col-sm-1">Action</th>
+                <th class="col-sm-1">Value</th>
+                <th class="col-sm-1">Variable</th>
+                <th class="col-md-3">Description</th>
+                <th class="col-sm-1">Modified By</th>
+                <th class="col-md-2 text-center">Action</th>
+              </tr>
+              <tr class="row" ng-if="TestDataList.length==0">
+                <td class="col-sm-12"> No Data Yet</td>
+              </tr>
+              <tbody ng-if="TestDataList.length>0" ng-repeat="testData in TestDataList | orderBy:'ExecutionSequence'" style="border: 0px;">
+              <tr class="row" style="{{testData.rowStyle}}">
+
+                <td class="col-sm-1">{{testData.ExecutionSequence}}</td>
+                <td class="col-sm-2" ng-if="testData.LinkTestType==StepTypeCodes.TestStep || testData.LinkTestType==StepTypeCodes.SqlTestStep">{{testData.DisplayNameValue}}</td>
+                <td class="col-sm-8" ng-if="testData.LinkTestType==StepTypeCodes.SharedTestStep" colspan="5" style="font-weight: bold;">
+                  <a href="javascript:void(0);" ng-click="onSharedTestLinkClick(testData.Id)">{{testData.SharedTest.TestName}}</a>
+                  <span ng-if="testData.Description.length>0">({{testData.Description}})</span>
+                </td>
+
+
+                <td class="col-sm-8" ng-if="testData.LinkTestType==StepTypeCodes.WebsiteTestStep" colspan="5" style="font-weight: bold;">
+                  <a target="_blank" ui-sref="Website.TestData({ WebsiteId: testData.SharedStepWebsiteId, TestCatId: 0, TestId: testData.SharedStepWebsiteTestId })"  >{{testData.SharedStepWebsiteName}} - ({{testData.SharedStepWebsiteTestName}})</a>
+                </td>
+
+                <td class="col-sm-8" ng-if="testData.LinkTestType==StepTypeCodes.ApiTestStep" colspan="5" style="font-weight: bold;">
+                  Api Test Step ( {{testData.ApiTestData.EndPoint}} ) ( {{testData.ApiTestData.ApiUrl}} )
+
+                </td>
+
+                <td class="col-sm-1" ng-if="testData.LinkTestType==StepTypeCodes.TestStep || testData.LinkTestType==StepTypeCodes.SqlTestStep">{{testData.ActionValue}}</td>
+                <td class="col-sm-1" ng-if="testData.LinkTestType==StepTypeCodes.TestStep || testData.LinkTestType==StepTypeCodes.SqlTestStep">{{testData.Value }}</td>
+                <td class="col-sm-1" ng-if="testData.LinkTestType==StepTypeCodes.TestStep || testData.LinkTestType==StepTypeCodes.SqlTestStep">{{testData.VariableName }}</td>
+                <td class="col-sm-3" ng-if="testData.LinkTestType==StepTypeCodes.TestStep || testData.LinkTestType==StepTypeCodes.SqlTestStep">{{testData.Description}}</td>
+
+                <td class="col-sm-1">
+                  {{testData.ModifiedByUserName}}
+                </td>
+
+                <td class="col-sm-2 text-center">
+                  <a ng-if="Authentication.CanWrite" ng-show="$index == 0"
+                     ui-sref="Website.TestDataAdd({WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: Test.Id, ExecutionSequence: testData.ExecutionSequence })"
+                     class="add-icon-sm fa fa-angle-double-up" title="Add Before"></a>
+
+                  <a ng-if="Authentication.CanWrite"
+                     ui-sref="Website.TestDataAdd({WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: Test.Id, ExecutionSequence: testData.ExecutionSequence + 1 })"
+                     class="add-icon-sm fa fa-angle-double-down pdl10" title="Add After"></a>
+
+                  <a ng-if="Authentication.CanWrite"
+                     ui-sref="Website.TestDataUpdate({WebsiteId: stateParamWebsiteId, TestCatId: TestCatId, TestId: Test.Id, TestDataId: testData.Id })"
+                     class="edit-icon fa fa-edit pdl10" title="Update"></a>
+
+                  <a ng-if="Authentication.CanDelete" ng-click="deleteTestData(testData.Id)" href="#" onclick="return false;"
+                     class="delete-icon fa fa-minus-circle pdl10" title="Delete"></a>
+                </td>
+              </tr>
+
+              <tr class="row" ng-if="testData.LinkTestType==StepTypeCodes.SharedTestStep && testData.ShowSharedTest">
+                <td class="col-sm-12 card-body table-responsive">
+                  <table class="table table-bordered table-striped">
+                    <tr class="row">
+                      <th class="col-sm-1">Default Sequence</th>
+                      <th class="col-sm-1">Sno</th>
+                      <th class="col-sm-2">Name</th>
+                      <th class="col-sm-2">Action</th>
+                      <th class="col-sm-1" style="text-align: center;">Default Skip</th>
+                      <th class="col-sm-1" style="text-align: center;">Modified By </th>
+                      <th class="col-sm-1">Default Value</th>
+                      <th class="col-sm-1">Value</th>
+                      <th class="col-sm-1">Default Variable</th>
+                      <th class="col-sm-1">Variable</th>
+                    </tr>
+                    <tr class="row" ng-repeat="stestData in testData.SharedTest.SharedTestDataList | orderBy:'ExecutionSequence'"
+                        ng-class="stestData.Ignore ? 'alert-danger' : ''">
+                      <td class="col-sm-1">{{stestData.ExecutionSequence}}</td>
+                      <td class="col-sm-1">{{stestData.UIExecutionSequence}}</td>
+                      <td class="col-sm-2">{{stestData.DisplayNameValue}}</td>
+                      <td class="col-sm-2">{{stestData.ActionValue}}</td>
+                      <td  class="col-sm-1" align="center"><input type="checkbox" disabled ng-model="stestData.IsIgnored"></td>
+                      <td  class="col-sm-1" align="center">{{stestData.UIModifiedByUserName}}</td>
+                      <td class="col-sm-1">{{stestData.Value}}</td>
+                      <td class="col-sm-1">{{stestData.UIValue}}</td>
+                      <td class="col-sm-1">{{stestData.VariableName}}</td>
+                      <td class="col-sm-1">{{stestData.UIVariableName}}</td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              </tbody>
+            </table>
+          </div>
+          <!-- /.box-body -->
+        </div>
+        <!-- /.box -->
+      </div>
+    </div>
+  </div>
+</section>

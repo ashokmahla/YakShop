@@ -1,0 +1,44 @@
+<section class="content">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-md-12">
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-sm-6">
+                <h3>Api Connection for - {{ApiCategory.Name}}</h3>
+              </div><!-- /.col -->
+              <div class="col-sm-6">
+                <a ng-if="Authentication.CanWrite" ui-sref="Website.ApiConnectionAdd({ WebsiteId: stateParamWebsiteId, ApiCategoryId: ApiCategory.Id })"
+                   class="float-right fa fa-plus-circle add-icon" title="Add Api Connection"></a>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body table-responsive" ng-init="getAllCons()">
+            <table class="table table-hover table-bordered">
+            <tr class="row">
+              <th class="col-sm-1">Id</th>
+              <th class="col-sm-8">Base Url</th>
+              <th class="col-sm-2">Environment Name</th>
+              <th class="col-sm-1 text-center"></th>
+            </tr>
+            <tr class="row" ng-repeat="apiConnection in ApiConnections | orderBy:'Id'">
+              <td class="col-sm-1">{{apiConnection.Id}}</td>
+              <td class="col-sm-8">{{apiConnection.BaseUrl}}</td>
+              <td class="col-sm-2">{{apiConnection.EnvironmentName}}</td>
+              <td class="col-sm-1 text-center" ng-if="Authentication.CanWrite">
+                <a ui-sref="Website.ApiConnectionUpdate({ WebsiteId: stateParamWebsiteId, ApiCategoryId: apiConnection.CategoryId, ApiConnectionId: apiConnection.Id })" class="edit-icon fa fa-edit" title="Edit"></a>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <!-- /.box-body -->
+      </div>
+      <!-- /.box -->
+    </div>
+  </div>
+</div>
+</section>
+
+

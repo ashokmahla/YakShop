@@ -1,0 +1,210 @@
+<section class="content" ng-init="loadDataSearchData()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Filters</h3>
+            <div class="card-tools">
+              <button title="Show/hide filters" type="button" ng-click="SectionOpen = !SectionOpen"
+                      class="btn btn-block btn-primary btn-sm" data-widget="collapse">
+                <i  ng-class="SectionOpen ? 'fa fa-minus' : 'fa fa-plus'"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <form ng-show="SectionOpen" class="form-horizontal" name="SuiteForm" ng-submit="SuiteForm.$valid && searchReport()">
+            <div class="card-body">
+
+              <div class="row">
+
+                <div class="col-sm-6 form-group">
+                  <label>Date Range</label>
+                  <input date-range-picker class="form-control date-picker" type="text" ng-model="date"
+                         options="{format: 'MM/DD/YYYY'}"/>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Suite Name</label>
+                  <select class="form-control" ng-model="SearchObject.SuiteId"
+                          ng-options="suite.Value as suite.Name for suite in SearchCriteriaData.Suites | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Test Cases</label>
+                  <select class="form-control" ng-model="SearchObject.TestId"
+                          ng-options="test.Value as test.Name for test in SearchCriteriaData.TestCases | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Os</label>
+                  <select class="form-control" ng-model="SearchObject.OsName"
+                          ng-options="opSys.Value as opSys.Name for opSys in SearchCriteriaData.OperationSystems | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Browser</label>
+                  <select class="form-control" ng-model="SearchObject.Browser"
+                          ng-options="browser.Value as browser.Name for browser in SearchCriteriaData.Browsers | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Status</label>
+                  <select class="form-control" ng-model="SearchObject.TestStatus"
+                          ng-options="testStatus.Value as testStatus.Name for testStatus in SearchCriteriaData.TestStatus | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="col-sm-6 form-group">
+                  <label>Queued by</label>
+
+                  <select class="form-control" ng-model="SearchObject.UserId"
+                          ng-options="user.Value as user.Name for user in SearchCriteriaData.Users | orderBy: 'Name'">
+                    <option value="">All</option>
+                  </select>
+                </div>
+
+                <div class="form-row col-sm-12 col-centered">
+                  <div class="form-group col-sm-4 offset-sm-2">
+                    <button type="submit" class="btn btn-block btn-primary btn-lg">Search</button>
+                  </div>
+                  <div class="form-group col-sm-4">
+                    <button type="button" class="btn btn-block btn-primary btn-lg" style="cursor: pointer;" ng-csv="getCsvData()" csv-header="getCsvHeaders()" lazy-load="true" filename="report.csv">To Excel</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="content" ng-init="getReport(1)">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <!-- left column -->
+      <div class="col-md-12">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h5 class="card-title">
+              <div class="row">
+                <div class="col-sm-1">
+                  <button title="Refresh the data" type="button" ng-click="getReport(CurrentPage)"  class="btn btn-block btn-primary btn-sm">
+                    <i class="fa fa-refresh"></i>
+                  </button>
+                </div>
+                <div class="col-sm-6">
+                  Showing {{StartNum}} to {{EndNum}} of {{Total}} {{ Total > 1 ? 'records' : 'record'}}
+                </div>
+              </div>
+            </h5>
+
+            <div class="card-tools col-right">
+                <dir-pagination-controls class="float-right" on-page-change="getReport(newPageNumber)"></dir-pagination-controls>
+            </div>
+          </div>
+          <div class="card-body table-responsive">
+            <table class="table table-hover table-bordered" ng-init="getAllTestCat()">
+              <tr class="row">
+                <th class="col-sm">
+                  <select ng-model="PageSize" ng-options="pageSize.Value as pageSize.Name for pageSize in PageSizes">
+                  </select>
+                </th>
+                <th colspan="2" class="col-sm">
+                  Total: {{Total}}
+                </th>
+                <th colspan="2" class="col-sm">
+                  Passed: {{Passed}}
+                </th>
+                <th colspan="2" class="col-sm">
+                  Faulted: {{Faulted}}
+                </th>
+              </tr>
+              <tr class="row">
+                <th class="col-sm-1">Queue</th>
+                <th class="col-sm-1">Suite </th>
+                <th class="col-sm-1">Test Name</th>
+                <th class="col-sm-1">Time Taken</th>
+                <th class="col-sm-1">Os</th>
+                <th class="col-sm-1">Browser</th>
+                <th class="col-sm-1">B. Version</th>
+                <th class="col-sm-1">Status</th>
+                <th class="col-sm-2">Screen Shot</th>
+                <th class="col-sm-1">Queued By</th>
+                <th class="col-sm-1 text-center">Action</th>
+              </tr>
+              <tr dir-paginate="report in ReportList | itemsPerPage: PageSize" total-items="Total"
+                  current-page="CurrentPage" class="row"
+                  style="color: {{ report.StatusText == 'Failed'?'red' : '' }};">
+                <td class="col-sm-1" ng-if="report.Id <= 0">{{report.TestQueueId}}</td>
+                <td class="col-sm-1" ng-if="report.Id > 0"><a
+                  ui-sref="Website.ReportDetail({WebsiteId: StateParamsWebsiteId,ReportId: report.Id})"
+
+                  target="_blank">{{report.TestQueueId}}</a></td>
+                <td class="col-sm-1"><a
+                  ui-sref="Website.SuiteUpdate({ WebsiteId: StateParamsWebsiteId, SuiteId: report.SuiteId || 0 })">{{report.SuiteName}}</a>
+                </td>
+                <td class="col-sm-1"><a
+                  ui-sref="Website.TestData({ WebsiteId: StateParamsWebsiteId, TestCatId: 0, TestId: report.TestId })">{{report.TestName}}</a>
+                </td>
+                <td class="col-sm-1">{{::report.TimeTaken}}</td>
+                <td class="col-sm-1">{{::report.Os}}</td>
+                <td class="col-sm-1">{{::report.BrowserName}}</td>
+                <td class="col-sm-1">{{::report.BrowserVersion}}</td>
+                <td class="col-sm-1">{{::report.StatusText}}</td>
+                <td class="col-sm-2" ng-if="::report.Status < 8">&nbsp;</td>
+                <td class="col-sm-2" ng-if="::report.Status >= 8">
+                  <a target="new" href="{{ ::report.ScreenShotUrl }}"><img ng-src="{{ ::report.ScreenShotThum200Url }}"
+                                                                           style="width: 100%;border:0;"/></a>
+                </td>
+                <td class="col-sm-1">
+                  {{report.QueuedBy}}
+                </td>
+                <td class="col-sm-1 text-center">
+                  <a style="pointer:cursor" ng-click="onQueueClick(report.TestId,report.Os,report.BrowserName)" class="add-icon-sm fa fa-upload pdl10" title="Queue"></a>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="card-header">
+              <div class="row">
+                <div class="col-md-6">
+                  <h5>Showing {{StartNum}} to {{EndNum}} of {{Total}} {{ Total > 1 ? 'records' : 'record'}}</h5>
+                </div>
+                <div class="col-md-6">
+                  <dir-pagination-controls class="float-right" on-page-change="getReport(newPageNumber)"></dir-pagination-controls>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="text/javascript">
+  $('.form_date').datetimepicker({
+    format: 'mm-dd-yyyy',
+    weekStart: 1,
+    todayBtn: 1,
+    autoclose: 1,
+    todayHighlight: 1,
+    startView: 2,
+    minView: 2,
+    forceParse: 0
+  });
+</script>

@@ -1,0 +1,76 @@
+<section class="content" ng-init="getSuiteById()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Edit Suite</h3>
+          </div>
+          <!-- /.card-header -->
+          <div class="col-md-12 text-center text-info"><label class="bg-success">{{message}}</label>
+          </div>
+          <form class="form-horizontal" name="SuiteForm" ng-submit="SuiteForm.$valid && updateSuite()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Suite Name</label>
+                <input type="text" class="form-control" ng-model="Suite.Name" name="Value" placeholder="Name" required>
+                <span ng-show="SuiteForm.Name.$touched || SuiteForm.$submitted">
+                <small class="help-block" ng-show="SuiteForm.Name.$error.required" style="color:red">Please enter value.</small>
+              </span>
+              </div>
+              <div class="form-group">
+                <label>Test Category</label>
+                <select class="form-control" ng-model="Suite.TestCatId" ng-change="onTestCategoryChange()"
+                        ng-options="testCat.Id as testCat.Name for testCat in TestCatList | orderBy:'Id'">
+                  <option style="display:none" value="">--All--</option>
+                </select>
+              </div>
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+            </div>
+          </form>
+
+          <div class="card-body table-responsive">
+            <div class="row" >
+              <div class="col-sm-5">
+                <strong>All</strong>
+                <table class="table table-hover table-bordered">
+                  <tr>
+                    <th> <input ng-change="markUnMarkAll()" type="checkbox" ng-model="markUnMark" /></th>
+                    <th>Id</th>
+                    <th>Test Name</th>
+                  </tr>
+                  <tr ng-repeat="test in TestList | orderBy:'Id'">
+                    <td><input type="checkbox" ng-model="test.Checked" ng-change="addRemoveTest(test,ShiftDirection.NotAddedToToBeAdded)" />  </td>
+                    <td ng-click="addRemoveTest(test,true)">{{::test.Id}}</td>
+                    <td><a ui-sref="Website.TestData({WebsiteId: Website.Id, TestCatId: test.CategoryId + 0, TestId: test.Id })" target="_blank">{{::test.TestName}}</a></td>
+                  </tr>
+                </table>
+              </div>
+              <div class="col-sm-2">&nbsp;</div>
+              <div class="col-sm-5">
+                <strong>Added</strong>
+                <table class="table table-hover table-bordered">
+                  <tr>
+                    <th><!-- <input ng-click="markUnMarkAll()" type="checkbox" ng-model="Mark" />--></th>
+                    <th>Id</th>
+                    <th>Test Name</th>
+                  </tr>
+                  <tr ng-repeat="test in TestListAdded | orderBy:'Id'">
+                    <td> <input type="checkbox" ng-model="test.Checked" ng-change="addRemoveTest(test,ShiftDirection.ToBeAddedToNotAdded)" /></td>
+                    <td>{{::test.Id}} </td>
+                    <td><a ui-sref="Website.TestData({WebsiteId: Website.Id, TestCatId: test.CategoryId + 0, TestId: test.Id })" target="_blank">{{::test.TestName}}</a></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

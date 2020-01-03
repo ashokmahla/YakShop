@@ -1,0 +1,77 @@
+<section class="content" ng-init="onDataBaseConnectionUpdatePageLoad()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Update Data Base Connection for  Category - {{DataBaseCategory.Name}}</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form class="form-horizontal" name="DataBaseConnectionForm" ng-submit="DataBaseConnectionForm.$valid && onDataBaseConnectionUpdatePageSubmit()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Environment Name</label>
+
+                <select class="form-control" ng-model="DataBaseConnection.EnvironmentId"
+                        ng-options="environment.Id as environment.Name for environment in EnvironmentList"
+                        name="EnvironmentName" required>
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Server Name</label>
+
+                <input type="text" class="form-control" placeholder="Server Name" name="ServerName"
+                       ng-model="DataBaseConnection.ServerName" required="">
+              </div>
+
+              <div class="form-group">
+                <label>Authentication</label>
+
+                <select ng-change="onAuthenticatonDropdownChange()" class="form-control" ng-model="DataBaseConnection.Authentication"
+                        ng-options="authentication.Id as authentication.Name for authentication in AuthenticationList"
+                        name="Authentication" required>
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group" ng-if="DataBaseConnection.Authentication==2">
+                <label>User Name</label>
+
+                <input type="text" class="form-control" placeholder="User Name" name="UserName"
+                       ng-model="DataBaseConnection.UserName" required="">
+              </div>
+
+              <div class="form-group" ng-if="DataBaseConnection.Authentication==2">
+                <label>Password</label>
+
+                <input type="password" class="form-control" placeholder="Password" name="Password"
+                       ng-model="DataBaseConnection.Password" required="">
+              </div>
+
+              <div class="form-group" ng-if="DataBaseList.Item.length>0">
+                <label>Data Base</label>
+
+                <select class="form-control" ng-model="DataBaseConnection.DataBaseName"
+                        ng-options="item as item for item in DataBaseList.Item"
+                        name="DataBaseName" required>
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" ng-if="DataBaseList.Item.length" class="btn btn-block btn-primary btn-lg">Save</button>
+                <button type="button" ng-if="!DataBaseList.Item.length" ng-click="onClickLoadDataBaseList()" class="btn btn-block btn-primary btn-lg">Get DB List</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,42 @@
+<section class="content" ng-init="getSharedTestById();loadData()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Update Shared Test</h3>
+          </div>
+          <!-- /.card-header -->
+          <form class="form-horizontal" name="TestForm" ng-submit="TestForm.$valid && updateSharedTest()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Shared Test Name</label>
+                <input type="text" class="form-control" ng-model="SharedTest.TestName" name="TestName"
+                       placeholder="Shared Test Name" required>
+                 <span ng-show="TestForm.TestName.$touched || TestForm.$submitted">
+                  <small class="help-block" ng-show="TestForm.TestName.$error.required" style="color:red">Please enter shared
+                    test name.
+                  </small>
+                </span>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-2 control-label">Description</label>
+                <textarea type="text" class="form-control ng-pristine ng-valid ng-touched"
+                          ng-model="SharedTest.Description" name="Description" placeholder="Description"></textarea>
+              </div>
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

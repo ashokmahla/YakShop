@@ -1,0 +1,118 @@
+<section class="content" ng-init="loadData()">
+  <div class="container-fluid">
+    <div class="row pd10">
+      <div class="col-sm-1"></div>
+      <!-- left column -->
+      <div class="col-md-10">
+        <!-- general form elements -->
+        <div class="card card-primary card-outline">
+          <div class="card-header">
+            <h3>Create New Test Script</h3>
+          </div>
+          <!-- /.card-header -->
+          <!-- form start -->
+          <form class="form-horizontal" name="TestForm" ng-submit="TestForm.$valid && addTest()">
+            <div class="card-body">
+              <div class="form-group">
+                <label>Test Script Name</label>
+
+                <input type="text" class="form-control" ng-model="Test.TestName" name="State" placeholder="TestName"
+                       required>
+                <span ng-show="TestForm.TestName.$touched || TestForm.$submitted">
+          <small class="help-block" ng-show="TestForm.TestName.$error.required" style="color:red">Please enter test
+            script name.
+          </small>
+        </span>
+              </div>
+
+              <div class="form-group">
+                <label>Test Category</label>
+
+                <select class="form-control" ng-model="Test.CategoryId"
+                        ng-options="testCat.Id as testCat.Name for testCat in TestCatList | orderBy:'Id'">
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Test Access</label>
+
+                <select class="form-control" ng-model="Test.TestCaseAccessStatus"
+                        ng-options="testAccessStatus.Id as testAccessStatus.Name for testAccessStatus in testAccessStatusList" required="">
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Description</label>
+
+                <textarea type="text" class="form-control ng-pristine ng-valid ng-touched" ng-model="Test.Description"
+                          name="Description" placeholder="Description"></textarea>
+              </div>
+
+              <div class="form-group">
+                <label>Copy Test Script Data</label>
+
+                <input type="checkbox" ng-model="CopyTestData.IsCopy" ng-click="getAllTestsIgnoreCat()"/>
+              </div>
+
+              <div class="form-group" ng-if="CopyTestData.IsCopy">
+                <label>Select Test Script To Copy</label>
+
+                <select class="form-control" ng-model="CopyTestData.Test"
+                        ng-options="test.TestName for test in TestList | orderBy :'TestName' track by test.Id" name="TestCopyId"
+                        ng-change="loadTestData()" required>
+                  <option style="display:none" value="">--Select--</option>
+                </select>
+              </div>
+
+              <div class="form-group col-sm-6 col-centered">
+                <button type="submit" class="btn btn-block btn-primary btn-lg">Save</button>
+              </div>
+
+              <div class="row">
+                <div ng-if="CopyTestData.HasTestData && CopyTestData.IsCopy" class="card-body table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <tr class="row">
+                      <th class="col-sm-1 text-center">
+                        <input type="checkbox" ng-model="CopyTestData.AllTestDataChecked"
+                               ng-change="selectAllTestData()"/>
+                      </th>
+                      <th class="col-sm-1">Sequence</th>
+                      <th class="col-sm-2">Display Name</th>
+                      <th class="col-sm-1">Action</th>
+                      <th class="col-sm-1">Value</th>
+                      <th class="col-sm-1">Variable Name</th>
+                      <th class="col-md-5">Description</th>
+                    </tr>
+                    <tr class="row" style="{{testData.rowStyle}}" ng-repeat="testData in CopyTestData.TestDataList">
+                      <td class="col-sm-1 text-center"><input type="checkbox" ng-model="testData.Checked"/></td>
+                      <td class="col-sm-1">{{testData.ExecutionSequence}}</td>
+                      <td class="col-sm-2" ng-if="testData.LinkTestType==Step_Types.TestStep">{{testData.DisplayNameValue}}</td>
+                      <td class="col-sm-10" ng-if="testData.LinkTestType==Step_Types.SharedTestStep" colspan="5" style="font-weight: bold;">
+                        <a href="javascript:void(0);" ng-click="onSharedTestLinkClick(testData.Id)">{{testData.SharedTest.TestName}}</a>
+                        <span ng-if="testData.Description.length>0">({{testData.Description}})</span>
+                      </td>
+
+                      <td class="col-sm-10" ng-if="testData.LinkTestType==Step_Types.WebsiteTestStep" colspan="5"
+                          style="font-weight: bold;">
+                        <a href="javascript:void(0);">{{testData.SharedStepWebsiteName}} -
+                          ({{testData.SharedStepWebsiteTestName}})</a>
+                      </td>
+
+                      <td class="col-sm-1" ng-if="testData.LinkTestType==Step_Types.TestStep">{{testData.ActionValue}}</td>
+                      <td class="col-sm-1" ng-if="testData.LinkTestType==Step_Types.TestStep">{{testData.Value }}</td>
+                      <td class="col-sm-1" ng-if="testData.LinkTestType==Step_Types.TestStep">{{testData.VariableName }}</td>
+                      <td class="col-sm-5" ng-if="testData.LinkTestType==Step_Types.TestStep">{{testData.Description}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
