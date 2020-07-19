@@ -21,7 +21,7 @@
     "angular-utils-pagination": "^0.11.1",
     "diff": "^3.5.0",
     "jsdiff": "^1.1.1",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.19",
     "ng-csv": "^0.3.6",
     "ngstorage": "^0.3.11",
     "restangular": "^1.6.1",
